@@ -23,7 +23,7 @@ class calcController {
     }
 
     get currentDate() {
-        return this._currentDate;
+        return new Date();
     }
 
     set currentDate(valor) {
