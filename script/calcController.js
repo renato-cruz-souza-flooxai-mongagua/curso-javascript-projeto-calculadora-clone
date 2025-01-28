@@ -11,11 +11,22 @@ class calcController {
 
     initialize() {
         
+        this.setDisplayDateTime()
+
         setInterval(() => {
-            this.displayDate = this.currentDate.toLocaleDateString(this._locale)
-            this.displayTime = this.currentDate.toLocaleTimeString(this._locale)
+            this.setDisplayDateTime();
         }, 1000);
     
+    }
+
+    setDisplayDateTime(){
+
+        this.displayDate = this.currentDate.toLocaleDateString(this._locale)
+        this.displayTime = this.currentDate.toLocaleTimeString(this._locale,{
+            day: "2-digit",
+            month:"long",
+            year:"numeric"
+        })
     }
 
     get displayTime() {
