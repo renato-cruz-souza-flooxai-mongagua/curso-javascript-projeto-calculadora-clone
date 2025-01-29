@@ -83,8 +83,6 @@ class calcController {
         if (isNaN(this.getLastOperation())) { 
             if (this.isOperator(value)) {
                 this.setlastOperation(value); 
-            } else if (isNaN(value)) {
-                console.log('Outra coisa:', value); 
             } else {
                 this.pushOperation(value); 
                 this.setLastNumberToDisplay()
