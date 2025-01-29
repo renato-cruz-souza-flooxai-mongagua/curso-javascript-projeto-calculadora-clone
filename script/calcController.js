@@ -33,37 +33,72 @@ class calcController {
     }
 
 
-    getLastOperation(){
-         return this._operation[this._operation.length-1]
+    getLastOperation() {
+        return this._operation[this._operation.length - 1];
     }
-
-    setlastOperation(value){
-        this._operation[this._operation.length-1] = value;
+    
+    setlastOperation(value) {
+        this._operation[this._operation.length - 1] = value;
     }
-
-    isOperator(value){
-       return (['+', '-', '*', '%', '/', '.'].indexOf(value) > -1)
+    
+    isOperator(value) {
+        return ['+', '-', '*', '%', '/', '.'].indexOf(value) > -1;
     }
-
-
-    addOperation(value){
-        console.log//('A', isNaN(this.getLastOperation()))
-        if(isNaN(this.getLastOperation())) {
-           if (this.isOperator(value)) {
-                
-            this.setlastOperation(value)
-           } else if(isNaN(value)){
-            // outro 
-            console.log(value)
-           } else {
-            this._operation.push(value)
-           } 
-        } else {
-           let newValue = this.getLastOperation().toString() + value.toString()
-           this.setlastOperation(parseInt(newValue))
+    
+    pushOperation(value) {
+        this._operation.push(value);
+        if (this._operation.length > 3) {
+            let last = this._operation.pop();
+            
+            this.calc();
+            
         }
-      
-        console.log(this._operation)
+    }
+
+    calc(){
+
+        let last = this._operation.pop();
+        let result = eval(this._operation.join(""))
+
+        this._operation = [result, last];
+
+    }
+
+    setLastNumberToDisplay(){
+        let lastNumber = null;
+
+        for (let i = this._operation.length - 1; i >= 0; i--) {
+            if (!this.isOperator(this._operation[i])) { 
+                lastNumber = this._operation[i];
+                break;
+            }
+        }
+
+        this.displayCalc = lastNumber
+    }
+    
+    addOperation(value) {
+        //console.log('A', value, isNaN(this.getLastOperation()));
+    
+        if (isNaN(this.getLastOperation())) { 
+            if (this.isOperator(value)) {
+                this.setlastOperation(value); 
+            } else if (isNaN(value)) {
+                console.log('Outra coisa:', value); 
+            } else {
+                this.pushOperation(value); 
+                this.setLastNumberToDisplay()
+            }
+        } else { 
+            if (this.isOperator(value)) {
+                this.pushOperation(value); 
+            } else {
+                let newValue = this.getLastOperation().toString() + value.toString();
+                this.setlastOperation(parseInt(newValue)); 
+
+                this.setLastNumberToDisplay()
+            }
+        }
     }
 
     execBtn(value) {
@@ -76,7 +111,7 @@ class calcController {
             case `soma`:
                 this.addOperation('+')
                 break;
-            case `subtraçao`:
+            case `subtracao`:
                 this.addOperation('-')
                 break;
             case `divisao`:
@@ -122,7 +157,7 @@ class calcController {
              
     
                 btn.style.cursor = "pointer"; 
-                console.log(`${textBtn}`);
+                
                 this.execBtn(textBtn);
             });
         });
