@@ -17,6 +17,7 @@ class calcController {
         setInterval(() => {
             this.setDisplayDateTime();
         }, 1000);
+        this.setLastNumberToDisplay();
     }
 
     addEventListenerAll(element, events, fn) {
@@ -58,14 +59,18 @@ class calcController {
     }
 
     calc() {
-        let last = this._operation.pop(); 
+        let last = '';
+        if (this._operation.length > 3) {
+            last = this._operation.pop(); 
+        }
         let result = eval(this._operation.join(""));
         
         if (last == '%') {
            result /= 100;
            this._operation = [result]
         } else {
-            this._operation = [result, last]; 
+            this._operation = [result]; 
+            if (last) this._operation.push(last)
         }
 
         
