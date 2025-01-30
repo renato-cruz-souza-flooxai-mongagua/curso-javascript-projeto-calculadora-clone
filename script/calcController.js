@@ -11,6 +11,7 @@ class calcController {
 
         this.initialize();
         this.initButtonsEvents();
+        this.initKeyBoard();
     }
 
     initialize() {
@@ -20,6 +21,52 @@ class calcController {
             this.setDisplayDateTime();
         }, 1000);
         this.setLastNumberToDisplay();
+    }
+
+    initKeyBoard() {
+        document.addEventListener("keyup", e => {
+            console.log(e.key); 
+    
+            switch (e.key) {
+                case "Escape":
+                    this.clearALL();
+                    break;
+                case "Backspace":
+                    this.clearEntry();
+                    break;
+                
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                case "%":
+                    this.addOperation(e.key);
+                    break;
+                
+                case "Enter":
+                case "=":
+                    this.calc();
+                    break;
+                
+                case ".":
+                case ",":
+                    this.addDot();
+                    break;
+                
+                case "0":
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                case "8":
+                case "9":
+                    this.addOperation(parseInt(e.key));
+                    break;
+            }
+        });
     }
 
     addEventListenerAll(element, events, fn) {
@@ -103,25 +150,21 @@ class calcController {
     }
 
     getLastItem(isOperator = true) {
-
-        let lastItem;
-
+        let lastItem = null;
+    
         for (let i = this._operation.length - 1; i >= 0; i--) {
-           
             if (this.isOperator(this._operation[i]) == isOperator) {
                 lastItem = this._operation[i];
                 break;
             }
-
-            if (!lastItem) {
-
-                lastItem = (isOperator) ? this._lastOperation : this._lastNumber
-            }
-       
+        }
+    
+        if (!lastItem) {
+            lastItem = isOperator ? this._lastOperation : this._lastNumber;
+        }
+    
+        return lastItem;
     }
-
-    return lastItem;
-}
 
 
 setLastNumberToDisplay() {
@@ -180,7 +223,7 @@ execBtn(value) {
             break;
 
         case "ponto":
-            this.addOperation(".");
+            this.addDoth();
             break;
 
         case "0":
